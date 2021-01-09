@@ -1,0 +1,43 @@
+apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle"
+
+def baseGroup = 'com.vary.tenantsecrets'
+def baseVersion = '0.0.1-SNAPSHOT'
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    group = baseGroup
+    version = baseVersion
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+gocdPlugin {
+    id = baseGroup
+    pluginVersion = baseVersion
+    goCdVersion = '20.9.0'
+    name = 'Tenant secrets plugin'
+    description = 'Generates AES secrets that are bound to a specific pipeline group.'
+    vendorName = 'sandro-h'
+    vendorUrl = 'https://github.com/sandro-h/tenantsecrets'
+
+//  githubRepo {
+//    owner = System.getenv('GITHUB_USER') ?: 'bob'
+//    repo = 'gitlab-oauth-authorization-plugin'
+//    token = System.getenv('GITHUB_TOKEN') ?: 'bad-token'
+//  }
+
+    pluginProject = project(':plugin')
+
+    prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
+    assetsToRelease = [project(':plugin').tasks.jar]
+}

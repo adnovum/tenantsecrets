@@ -1,0 +1,18 @@
+dependencies {
+  implementation group: 'com.github.bdpiparva.plugin.base', name: 'gocd-plugin-base', version: '0.0.5'
+  implementation project(':base')
+  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.1.0'
+
+  // Use JUnit test framework
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.1'
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.1'
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.4.1'
+  testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.1.0'
+}
+
+jar {
+  archiveBaseName = 'tenantsecrets'
+  from(configurations.runtimeClasspath) {
+    into "lib/"
+  }
+}

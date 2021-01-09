@@ -1,0 +1,5 @@
+rootProject.name = 'tenantsecrets'
+
+include 'base'
+include 'webservice'
+include 'plugin'
