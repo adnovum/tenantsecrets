@@ -9,3 +9,10 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+bootBuildImage {
+	imageName = "ghcr.io/sandro-h/${rootProject.name}:${project.version}"
+	doLast {
+		print "::set-output name=image::${imageName}"
+	}
+}

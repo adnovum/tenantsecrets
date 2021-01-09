@@ -1,7 +1,7 @@
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle"
 
 def baseGroup = 'com.vary.tenantsecrets'
-def baseVersion = '0.0.1-SNAPSHOT'
+def baseVersion = '0.0.1'
 
 subprojects {
     apply plugin: 'java'
@@ -40,4 +40,19 @@ gocdPlugin {
 
     prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
     assetsToRelease = [project(':plugin').tasks.jar]
+}
+
+task tagRelease(type: Exec) {
+    commandLine 'git', 'tag', "v${baseVersion}"
+}
+
+task pushTag(type: Exec) {
+    commandLine 'git', 'push', 'origin', "v${baseVersion}"
+    mustRunAfter tagRelease
+}
+
+task release {
+    group 'Publishing'
+    description 'Trigger release via GH Actions'
+    dependsOn tagRelease, pushTag
 }

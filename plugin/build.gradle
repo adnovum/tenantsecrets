@@ -1,3 +1,5 @@
+apply plugin: 'maven-publish'
+
 dependencies {
   implementation group: 'com.github.bdpiparva.plugin.base', name: 'gocd-plugin-base', version: '0.0.5'
   implementation project(':base')
@@ -14,5 +16,23 @@ jar {
   archiveBaseName = 'tenantsecrets'
   from(configurations.runtimeClasspath) {
     into "lib/"
+  }
+}
+
+publishing {
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = uri("https://maven.pkg.github.com/sandro-h/tenantsecrets")
+      credentials {
+        username = 'sandro-h'
+        password = project.findProperty("gpr.key")
+      }
+    }
+  }
+  publications {
+    gpr(MavenPublication) {
+      from(components.java)
+    }
   }
 }
