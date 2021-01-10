@@ -1,5 +1,7 @@
 package com.vary.tenantsecrets.tenantsecrets;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,8 @@ import javax.validation.constraints.NotEmpty;
 @Controller
 @RequestMapping("/secrets")
 public class SecretsUiController {
+
+	private static final Logger LOG = LoggerFactory.getLogger(SecretsUiController.class);
 
 	private static final String SECRETS_FORM = "secretsForm";
 
@@ -45,6 +49,7 @@ public class SecretsUiController {
 			model.addAttribute("exampleUse",
 					String.format("{{SECRET:[%s][%s]}}", request.getPipelineGroup(), secret));
 		} catch (Exception e) {
+			LOG.error("Error encrypting secret in form request", e);
 			model.addAttribute("encryptError", "Unexpected error when encrypting.");
 		}
 

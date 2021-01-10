@@ -12,27 +12,14 @@ dependencies {
   testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.1.0'
 }
 
+ext.archiveBaseName = 'tenantsecrets-plugin'
+
 jar {
-  archiveBaseName = 'tenantsecrets'
+  archiveBaseName = project.archiveBaseName
   from(configurations.runtimeClasspath) {
     into "lib/"
   }
-}
-
-publishing {
-  repositories {
-    maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/sandro-h/tenantsecrets")
-      credentials {
-        username = 'sandro-h'
-        password = project.findProperty("gpr.key")
-      }
-    }
-  }
-  publications {
-    gpr(MavenPublication) {
-      from(components.java)
-    }
+  doLast {
+    println "::set-output name=version::${version}"
   }
 }

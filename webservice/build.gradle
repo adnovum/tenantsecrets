@@ -13,8 +13,10 @@ dependencies {
 }
 
 bootBuildImage {
-	imageName = "ghcr.io/sandro-h/${rootProject.name}:${project.version}"
+	def imageBaseName = "ghcr.io/sandro-h/${rootProject.name}"
+	imageName = "${imageBaseName}:${project.version}"
 	doLast {
-		print "::set-output name=image::${imageName}"
+		println "::set-output name=image_base::${imageBaseName}"
+		println "::set-output name=image::${imageName}"
 	}
 }

@@ -1,4 +1,4 @@
 server.port: 1717
 
 tenantsecrets:
-  cipherFile: TBD
+  cipherFile: /config/cipher.aes
