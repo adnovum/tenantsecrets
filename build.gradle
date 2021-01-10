@@ -1,3 +1,7 @@
+plugins {
+    id "org.sonarqube" version "3.0"
+}
+
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle"
 
 def baseGroup = 'com.vary.tenantsecrets'
@@ -30,6 +34,14 @@ gocdPlugin {
     vendorName = 'sandro-h'
     vendorUrl = 'https://github.com/sandro-h/tenantsecrets'
     pluginProject = project(':plugin')
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "sandro-h_tenantsecrets"
+        property "sonar.organization", "sandro-h-github"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 task tagRelease(type: Exec) {
