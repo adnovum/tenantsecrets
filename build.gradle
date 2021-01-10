@@ -9,6 +9,7 @@ def baseVersion = '0.0.1'
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -23,6 +24,17 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+
+    jacoco {
+        toolVersion = "0.8.6"
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+        }
+    }
+    test.finalizedBy jacocoTestReport
 }
 
 gocdPlugin {

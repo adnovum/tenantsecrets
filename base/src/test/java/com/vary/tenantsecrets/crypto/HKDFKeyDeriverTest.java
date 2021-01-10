@@ -7,19 +7,19 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HKDFKeyDeriverTest {
+class HKDFKeyDeriverTest {
 
 	private static byte[] key;
 	private final HKDFKeyDeriver keyDeriver = new HKDFKeyDeriver();
 
 	@BeforeAll
-	public static void setupClass() throws Exception {
+	static void setupClass() throws Exception {
 		key = KeyProvider.fromStream(ContextSpecificSecretProviderTest.class.getResourceAsStream(
 				"/cipher.aes"));
 	}
 
 	@Test
-	public void shouldDeriveValidAesKey() throws Exception {
+	void shouldDeriveValidAesKey() throws Exception {
 		byte[] derivedKey = keyDeriver.deriveKey(key, "my_group1");
 		assertEquals(16, derivedKey.length);
 		String encrypted = new AesEncrypter().encrypt(derivedKey, "foobar");
@@ -27,14 +27,14 @@ public class HKDFKeyDeriverTest {
 	}
 
 	@Test
-	public void shouldGenerateSameKeyForSameContext() {
+	void shouldGenerateSameKeyForSameContext() {
 		byte[] derivedKey = keyDeriver.deriveKey(key, "my_group1");
 		byte[] derivedKey2 = keyDeriver.deriveKey(key, "my_group1");
 		assertArrayEquals(derivedKey, derivedKey2);
 	}
 
 	@Test
-	public void shouldGenerateDifferentKeysForDifferentContext() {
+	void shouldGenerateDifferentKeysForDifferentContext() {
 		byte[] derivedKey = keyDeriver.deriveKey(key, "my_group1");
 		byte[] derivedKey2 = keyDeriver.deriveKey(key, "my_group2");
 		assertFalse(Arrays.equals(derivedKey, derivedKey2));

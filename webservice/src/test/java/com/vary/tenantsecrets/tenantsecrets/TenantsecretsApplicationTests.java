@@ -25,7 +25,7 @@ class TenantsecretsApplicationTests {
 	private TestRestTemplate restTemplate;
 
 	@Test
-	public void shouldEncrypt() {
+	void shouldEncrypt() {
 		ResponseEntity<String> response = restTemplate.postForEntity(
 				"http://localhost:" + port + "/secrets/my_group", "my secret", String.class);
 

@@ -75,9 +75,9 @@ public class AesEncrypter implements Encrypter {
 	}
 
 	private static byte[] createIV() {
-		byte[] IV = new byte[12];
+		byte[] iv = new byte[12];
 		SecureRandom random = new SecureRandom();
-		random.nextBytes(IV);
-		return IV;
+		random.nextBytes(iv);
+		return iv;
 	}
 }

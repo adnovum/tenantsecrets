@@ -8,6 +8,10 @@ import java.nio.charset.StandardCharsets;
 
 public class KeyProvider {
 
+	private KeyProvider() {
+		// Static helper class.
+	}
+
 	public static byte[] fromFile(File file) throws IOException {
 		try (InputStream is = new FileInputStream(file)) {
 			return fromStream(is);

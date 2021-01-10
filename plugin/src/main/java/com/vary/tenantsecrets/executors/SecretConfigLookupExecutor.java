@@ -39,7 +39,7 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
 
     private static final Logger LOG = Logger.getLoggerFor(SecretConfigLookupExecutor.class);
 
-    private ContextSpecificSecretProvider secretProvider;
+    private ContextSpecificSecretProvider secretProviderInstance;
 
     @Override
     protected GoPluginApiResponse execute(LookupSecretRequest request) {
@@ -80,13 +80,13 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
     }
 
     private ContextSpecificSecretProvider getSecretProvider(String cipherFile) throws IOException {
-        if (secretProvider == null) {
-            secretProvider = new ContextSpecificSecretProvider(
+        if (secretProviderInstance == null) {
+            secretProviderInstance = new ContextSpecificSecretProvider(
                     new AesEncrypter(),
                     new HKDFKeyDeriver(),
                     KeyProvider.fromFile(new File(cipherFile))
             );
         }
-        return secretProvider;
+        return secretProviderInstance;
     }
 }

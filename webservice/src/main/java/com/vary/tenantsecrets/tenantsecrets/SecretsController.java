@@ -1,11 +1,13 @@
 package com.vary.tenantsecrets.tenantsecrets;
 
-import com.vary.tenantsecrets.crypto.*;
+import com.vary.tenantsecrets.crypto.AesEncrypter;
+import com.vary.tenantsecrets.crypto.ContextSpecificSecretProvider;
+import com.vary.tenantsecrets.crypto.HKDFKeyDeriver;
+import com.vary.tenantsecrets.crypto.KeyProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +36,6 @@ public class SecretsController {
 
 	private ContextSpecificSecretProvider getSecretProvider() throws IOException {
 		if (secretProvider == null) {
-			System.out.println(cipherFile.getAbsolutePath());
 			secretProvider = new ContextSpecificSecretProvider(
 					new AesEncrypter(),
 					new HKDFKeyDeriver(),
