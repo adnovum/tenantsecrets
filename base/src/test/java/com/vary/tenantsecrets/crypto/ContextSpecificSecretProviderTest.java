@@ -22,12 +22,6 @@ public class ContextSpecificSecretProviderTest {
 	}
 
 	@Test
-	public void test() throws Exception {
-		String secret = secretProvider.encrypt("hello world!", "defaultGroup");
-		System.out.println(secret);
-	}
-
-	@Test
 	public void shouldEncrypt() throws Exception {
 		String secret = secretProvider.encrypt("hello world", "my_group1");
 		assertFalse(secret.isEmpty());
