@@ -27,7 +27,7 @@ class TenantsecretsApplicationTests {
 	@Test
 	void shouldEncrypt() {
 		ResponseEntity<String> response = restTemplate.postForEntity(
-				"http://localhost:" + port + "/secrets/my_group", "my secret", String.class);
+				"http://localhost:" + port + "/api/secrets/my_group", "my secret", String.class);
 
 		assertEquals(201, response.getStatusCode().value());
 		assertTrue(response.getBody().startsWith("AES:"));
