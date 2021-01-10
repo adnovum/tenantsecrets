@@ -29,17 +29,7 @@ gocdPlugin {
     description = 'Generates AES secrets that are bound to a specific pipeline group.'
     vendorName = 'sandro-h'
     vendorUrl = 'https://github.com/sandro-h/tenantsecrets'
-
-//  githubRepo {
-//    owner = System.getenv('GITHUB_USER') ?: 'bob'
-//    repo = 'gitlab-oauth-authorization-plugin'
-//    token = System.getenv('GITHUB_TOKEN') ?: 'bad-token'
-//  }
-
     pluginProject = project(':plugin')
-
-    prerelease = !"No".equalsIgnoreCase(System.getenv('PRERELEASE'))
-    assetsToRelease = [project(':plugin').tasks.jar]
 }
 
 task tagRelease(type: Exec) {

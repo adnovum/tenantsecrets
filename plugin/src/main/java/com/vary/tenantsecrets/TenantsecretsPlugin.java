@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* Taken and adapted from github.com/gocd-contrib/secrets-skeleton-plugin. */
 
 package com.vary.tenantsecrets;
 
