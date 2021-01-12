@@ -5,7 +5,7 @@ plugins {
 apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle"
 
 def baseGroup = 'com.vary.tenantsecrets'
-def baseVersion = '0.0.2'
+def baseVersion = '0.0.3'
 
 subprojects {
     apply plugin: 'java'
@@ -40,7 +40,7 @@ subprojects {
 gocdPlugin {
     id = baseGroup
     pluginVersion = baseVersion
-    goCdVersion = '20.9.0'
+    goCdVersion = '20.7.0'
     name = 'Tenant secrets plugin'
     description = 'Generates AES secrets that are bound to a specific pipeline group.'
     vendorName = 'sandro-h'
