@@ -44,9 +44,10 @@ Note: The webservice only provides a HTTP endpoint. You're encouraged to use the
 GoCD admins have to create a secret configuration for each tenant that
 wishes to use tenant secrets:
 
-* **Id**: Use the tenant identifier name for convenience
-* **Cipher file**: Path to the master key for the encryption. We suggest using the GoCD server key (config/cipher.aes) for this.
+* **Id**: Use the tenant identifier for convenience
 * **Tenant identifier**: The unique identifier of the tenant to which the secrets will be bound.
+* **Cipher file**: Path to the master key for the encryption. Defaults to `/godata/config/cipher.aes`, which is the cipher file used
+by the gocd-server docker image.
 * **Rules**: Make sure to restrict the secret config to the pipeline group or environment that only the tenant has access to.
 
 ![secret configuration](docs/secret_configuration.png)

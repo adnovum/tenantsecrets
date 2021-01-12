@@ -27,14 +27,14 @@ import java.util.Objects;
 
 public class SecretConfig {
     @Expose
-    @Property(name = "cipherFile", required = true)
-    @SerializedName("cipherFile")
-    private String cipherFile;
-
-    @Expose
     @Property(name = "tenantId", required = true)
     @SerializedName("tenantId")
     private String tenantId;
+
+    @Expose
+    @Property(name = "cipherFile")
+    @SerializedName("cipherFile")
+    private String cipherFile;
 
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
@@ -42,12 +42,12 @@ public class SecretConfig {
         return GSON.fromJson(requestBody, SecretConfig.class);
     }
 
-    public String getCipherFile() {
-        return cipherFile;
-    }
-
     public String getTenantId() {
         return tenantId;
+    }
+
+    public String getCipherFile() {
+        return cipherFile;
     }
 
     @Override

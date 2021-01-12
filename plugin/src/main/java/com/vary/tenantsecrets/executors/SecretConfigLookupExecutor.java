@@ -17,16 +17,16 @@
 
 package com.vary.tenantsecrets.executors;
 
+import com.github.bdpiparva.plugin.base.executors.secrets.LookupExecutor;
+import com.thoughtworks.go.plugin.api.logging.Logger;
+import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
+import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.vary.tenantsecrets.crypto.AesEncrypter;
 import com.vary.tenantsecrets.crypto.ContextSpecificSecretProvider;
 import com.vary.tenantsecrets.crypto.HKDFKeyDeriver;
 import com.vary.tenantsecrets.crypto.KeyProvider;
 import com.vary.tenantsecrets.models.LookupSecretRequest;
 import com.vary.tenantsecrets.models.ResolvedSecret;
-import com.github.bdpiparva.plugin.base.executors.secrets.LookupExecutor;
-import com.thoughtworks.go.plugin.api.logging.Logger;
-import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
-import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +37,8 @@ import static com.github.bdpiparva.plugin.base.GsonTransformer.toJson;
 
 public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretRequest> {
 
+    private static final String DEFAULT_CIPHER_FILE = "/godata/config/cipher.aes";
+
     private static final Logger LOG = Logger.getLoggerFor(SecretConfigLookupExecutor.class);
 
     private ContextSpecificSecretProvider secretProviderInstance;
@@ -44,12 +46,16 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
     @Override
     protected GoPluginApiResponse execute(LookupSecretRequest request) {
         String tenantId = request.getConfig().getTenantId();
+        String cipherFile = request.getConfig().getCipherFile();
+        if (cipherFile == null || cipherFile.isEmpty()) {
+            cipherFile = DEFAULT_CIPHER_FILE;
+        }
 
         ContextSpecificSecretProvider secretProvider;
         try {
-            secretProvider = getSecretProvider(request.getConfig().getCipherFile());
+            secretProvider = getSecretProvider(cipherFile);
         } catch (IOException e) {
-            LOG.error("Could not load secret provider for cipher file " + request.getConfig().getCipherFile(),
+            LOG.error("Could not load secret provider for cipher file " + cipherFile,
                     e);
             String message = "Could not decrypt secret. Failed to load the secret provider. Check logs.";
             return new DefaultGoPluginApiResponse(404,
