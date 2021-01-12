@@ -3,6 +3,7 @@ package com.vary.tenantsecrets.tenantsecrets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,21 +25,24 @@ public class SecretsUiController {
 
 	private final SecretsService secretsService;
 
+	private final String docLink;
+
 	@Autowired
-	public SecretsUiController(SecretsService secretsService) {
+	public SecretsUiController(SecretsService secretsService, @Value("${tenantsecrets.docLink}") String docLink) {
 		this.secretsService = secretsService;
+		this.docLink = docLink;
 	}
 
 	@GetMapping
 	public String getSecretsForm(Model model) {
-		model.addAttribute("request", new EncryptRequest());
+		initializeModel(model, new EncryptRequest());
 		return SECRETS_FORM;
 	}
 
 	@PostMapping
 	public String postSecretsForm(@ModelAttribute("request") @Valid EncryptRequest request, BindingResult bindingResult,
 						  Model model) {
-		model.addAttribute("request", request);
+		initializeModel(model, request);
 		if (bindingResult.hasErrors()) {
 			return SECRETS_FORM;
 		}
@@ -54,6 +58,11 @@ public class SecretsUiController {
 		}
 
 		return SECRETS_FORM;
+	}
+
+	private void initializeModel(Model model, EncryptRequest request) {
+		model.addAttribute("request", request);
+		model.addAttribute("docLink", docLink);
 	}
 
 	public static class EncryptRequest {

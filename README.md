@@ -37,6 +37,13 @@ See "Generating secrets" on how to use these entrypoints.
 
 Note: The webservice only provides a HTTP endpoint. You're encouraged to use the same HTTPS termination as for the GoCD server (e.g. nginx).
 
+The following environment variables can be used to configure the webservice:
+
+| Env. variable | Default | Description |
+| ------------- | ------- | ----------- |
+| `TENANTSECRETS_CIPHERFILE` | `/config/cipher.aes` | Path to cipher file for secret encryption. |
+| `TENANTSECRETS_DOCLINK` | `https://github.com/sandro-h/tenantsecrets` | The documentation link shown after encrypting a secret in the UI. |
+
 ## Administration
 
 ### Creating secret configs

@@ -2,3 +2,4 @@ server.port: 1717
 
 tenantsecrets:
   cipherFile: /config/cipher.aes
+  docLink: https://github.com/sandro-h/tenantsecrets
