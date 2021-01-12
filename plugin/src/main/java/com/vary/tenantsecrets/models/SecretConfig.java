@@ -32,9 +32,9 @@ public class SecretConfig {
     private String cipherFile;
 
     @Expose
-    @Property(name = "pipelineGroup", required = true)
-    @SerializedName("pipelineGroup")
-    private String pipelineGroup;
+    @Property(name = "tenantId", required = true)
+    @SerializedName("tenantId")
+    private String tenantId;
 
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
@@ -46,8 +46,8 @@ public class SecretConfig {
         return cipherFile;
     }
 
-    public String getPipelineGroup() {
-        return pipelineGroup;
+    public String getTenantId() {
+        return tenantId;
     }
 
     @Override
@@ -56,11 +56,11 @@ public class SecretConfig {
         if (o == null || getClass() != o.getClass()) return false;
         SecretConfig that = (SecretConfig) o;
         return Objects.equals(getCipherFile(), that.getCipherFile()) &&
-                Objects.equals(getPipelineGroup(), that.getPipelineGroup());
+                Objects.equals(getTenantId(), that.getTenantId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCipherFile(), getPipelineGroup());
+        return Objects.hash(getCipherFile(), getTenantId());
     }
 }

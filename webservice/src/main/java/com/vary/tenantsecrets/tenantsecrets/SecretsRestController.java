@@ -17,11 +17,11 @@ public class SecretsRestController {
 		this.secretsService = secretsService;
 	}
 
-	@PostMapping("/{pipelineGroup}")
-	public ResponseEntity<String> encrypt(@PathVariable("pipelineGroup") String pipelineGroup,
+	@PostMapping("/{tenantId}")
+	public ResponseEntity<String> encrypt(@PathVariable("tenantId") String tenantId,
 										 @RequestBody String plainText) {
 		try {
-			String secret = secretsService.encrypt(plainText, pipelineGroup);
+			String secret = secretsService.encrypt(plainText, tenantId);
 			return ResponseEntity.status(HttpStatus.CREATED).body(secret);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error generating secret.");

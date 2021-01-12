@@ -44,10 +44,10 @@ public class SecretsUiController {
 		}
 
 		try {
-			String secret = secretsService.encrypt(request.getPipelineGroup(), request.getPlaintext());
+			String secret = secretsService.encrypt(request.getPlaintext(), request.getTenantId());
 			model.addAttribute("secret", secret);
 			model.addAttribute("exampleUse",
-					String.format("{{SECRET:[%s][%s]}}", request.getPipelineGroup(), secret));
+					String.format("{{SECRET:[%s][%s]}}", request.getTenantId(), secret));
 		} catch (Exception e) {
 			LOG.error("Error encrypting secret in form request", e);
 			model.addAttribute("encryptError", "Unexpected error when encrypting.");
@@ -58,17 +58,17 @@ public class SecretsUiController {
 
 	public static class EncryptRequest {
 		@NotEmpty
-		private String pipelineGroup;
+		private String tenantId;
 
 		@NotEmpty
 		private String plaintext;
 
-		public String getPipelineGroup() {
-			return pipelineGroup;
+		public String getTenantId() {
+			return tenantId;
 		}
 
-		public void setPipelineGroup(String pipelineGroup) {
-			this.pipelineGroup = pipelineGroup;
+		public void setTenantId(String tenantId) {
+			this.tenantId = tenantId;
 		}
 
 		public String getPlaintext() {

@@ -17,8 +17,8 @@ public class SecretsService {
 		this.cipherFile = cipherFile;
 	}
 
-	public String encrypt(String pipelineGroup, String plainText) throws IOException, CryptoException {
-		return getSecretProvider().encrypt(plainText, pipelineGroup);
+	public String encrypt(String plainText, String tenantId) throws IOException, CryptoException {
+		return getSecretProvider().encrypt(plainText, tenantId);
 	}
 
 	private ContextSpecificSecretProvider getSecretProvider() throws IOException {

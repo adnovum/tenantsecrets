@@ -43,7 +43,7 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
 
     @Override
     protected GoPluginApiResponse execute(LookupSecretRequest request) {
-        String pipelineGroup = request.getConfig().getPipelineGroup();
+        String tenantId = request.getConfig().getTenantId();
 
         ContextSpecificSecretProvider secretProvider;
         try {
@@ -59,13 +59,13 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
         List<ResolvedSecret> resolvedSecrets = new LinkedList<>();
         for (String secret: request.getKeys()) {
             try {
-                String decrypted = secretProvider.decrypt(secret, pipelineGroup);
+                String decrypted = secretProvider.decrypt(secret, tenantId);
                 resolvedSecrets.add(new ResolvedSecret(secret, decrypted));
             }
             catch (Exception e) {
                 LOG.error("Could not decrypt secret " + secret,  e);
                 String message = "Could not decrypt secret. Was it generated for the " +
-                        "pipeline group defined for this secret config (" + pipelineGroup + ")?";
+                        "tenant identifier defined for this secret config (" + tenantId + ")?";
                 return new DefaultGoPluginApiResponse(404,
                         "{\"message\": \"" + message + "\"}");
             }

@@ -5,9 +5,9 @@
 
 GoCD secrets plugin that provides multi-tenant secrets.
 
-It allows generating GoCD secrets that are bound to a pipeline group. A bound secret
-cannot be decrypted in any other pipeline group. This prevents someone with access to
-other pipeline configs (especially in the pipeline-as-code context) from copying the
+It allows generating GoCD secrets that are bound to a tenant. A bound secret
+cannot be decrypted by any other tenant using the same GoCD instance.
+This prevents someone with access to other pipeline configs (especially in the pipeline-as-code context) from copying the
 secret and making GoCD decrypt it in their own pipeline.
 
 ## Installation
@@ -41,24 +41,25 @@ Note: The webservice only provides a HTTP endpoint. You're encouraged to use the
 
 ### Creating secret configs
 
-GoCD admins have to create a secret configuration for each pipeline group that
+GoCD admins have to create a secret configuration for each tenant that
 wishes to use tenant secrets:
 
-* **Id**: Use the pipeline group name for convenience
+* **Id**: Use the tenant identifier name for convenience
 * **Cipher file**: Path to the master key for the encryption. We suggest using the GoCD server key (config/cipher.aes) for this.
-* **Pipeline group**: The pipeline group to which the secrets will be bound.
-* **Rules**: Make sure to restrict the secret config to the pipeline group.
+* **Tenant identifier**: The unique identifier of the tenant to which the secrets will be bound.
+* **Rules**: Make sure to restrict the secret config to the pipeline group or environment that only the tenant has access to.
 
 ![secret configuration](docs/secret_configuration.png)
 
-### Pipeline group authorization
+### Tenant separation
 
-The security of tenant secrets relies on properly configured pipeline group authorization. Otherwise
-an adversary can just place his pipeline into another pipeline group and read the secrets bound to that
-pipeline group.
+The security of tenant secrets relies on properly configured authorization. Each tenant should have an
+exclusive pipeline group or environment assigned to them.   
+Otherwise an adversary can just place his pipeline into another tenant's pipeline group or environment and read the secrets bound
+to that tenant.
 
-* For pipelines configured via UI: users should not be allowed to create their own pipelines in arbitrary pipeline groups.
-* For pipeline-as-code configuration: Make sure to restrict config repos to specific pipeline groups.
+* For pipelines configured via UI: users should not be allowed to create their own pipelines in arbitrary pipeline groups or environments.
+* For pipeline-as-code configuration: Make sure to restrict config repos to specific pipeline groups and/or environments.
 
 ![config repo configuration](docs/restrict_config_repo.png)
 
@@ -71,18 +72,18 @@ follow the instructions in the form.
 
 ### Via REST
 
-POST your secret to `http://localhost:1717/api/secrets/<pipeline group>`.
+POST your secret to `http://localhost:1717/api/secrets/<tenant identifier>`.
 
 Example curl call:
 
 ```shell
-curl 'http://localhost:1717/api/secrets/my_group1' -s -H 'Content-Type: text/plain' -d "my secret"
+curl 'http://localhost:1717/api/secrets/tenant1' -s -H 'Content-Type: text/plain' -d "my secret"
 ```
 
 The secret can be referenced in pipelines using the [secret param syntax](https://docs.gocd.org/current/configuration/secrets_management.html#step-4---define-secret-params).
 
 ```text
-{{SECRET:[my_group1][AES:YZEax9ra1bkL6Td9:5dgUOEIZACwfZGcZoRu5]}}
+{{SECRET:[tenant1][AES:YZEax9ra1bkL6Td9:5dgUOEIZACwfZGcZoRu5]}}
 ```
 
 For example in a YAML configuration:
@@ -90,9 +91,8 @@ For example in a YAML configuration:
 ```yaml
 pipelines:
   mypipeline:
-    group: my_group1
     environment_variables:
-      LE_SECRET: "{{SECRET:[my_group1][AES:YZEax9ra1bkL6Td9:5dgUOEIZACwfZGcZoRu5]}}"
+      LE_SECRET: "{{SECRET:[tenant1][AES:YZEax9ra1bkL6Td9:5dgUOEIZACwfZGcZoRu5]}}"
 ```
 
 ## Development
