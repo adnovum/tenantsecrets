@@ -1,72 +1,72 @@
 plugins {
-    id "org.sonarqube" version "3.0"
+  id "org.sonarqube" version '3.0'
 }
 
-apply from: "https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle"
+apply from: 'https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle'
 
 def baseGroup = 'com.vary.tenantsecrets'
 def baseVersion = '0.0.4'
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'jacoco'
+  apply plugin: 'java'
+  apply plugin: 'jacoco'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
 
-    group = baseGroup
-    version = baseVersion
+  group = baseGroup
+  version = baseVersion
 
-    repositories {
-        mavenCentral()
+  repositories {
+    mavenCentral()
+  }
+
+  test {
+    useJUnitPlatform()
+  }
+
+  jacoco {
+    toolVersion = '0.8.6'
+  }
+
+  jacocoTestReport {
+    reports {
+      xml.enabled true
     }
-
-    test {
-        useJUnitPlatform()
-    }
-
-    jacoco {
-        toolVersion = "0.8.6"
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled true
-        }
-    }
-    test.finalizedBy jacocoTestReport
+  }
+  test.finalizedBy jacocoTestReport
 }
 
 gocdPlugin {
-    id = baseGroup
-    pluginVersion = baseVersion
-    goCdVersion = '20.7.0'
-    name = 'Tenant secrets plugin'
-    description = 'Generates AES secrets that are bound to a specific tenant.'
-    vendorName = 'sandro-h'
-    vendorUrl = 'https://github.com/sandro-h/tenantsecrets'
-    pluginProject = project(':plugin')
+  id = baseGroup
+  pluginVersion = baseVersion
+  goCdVersion = '20.7.0'
+  name = 'Tenant secrets plugin'
+  description = 'Generates AES secrets that are bound to a specific tenant.'
+  vendorName = 'sandro-h'
+  vendorUrl = 'https://github.com/sandro-h/tenantsecrets'
+  pluginProject = project(':plugin')
 }
 
 sonarqube {
-    properties {
-        property "sonar.projectKey", "sandro-h_tenantsecrets"
-        property "sonar.organization", "sandro-h-github"
-        property "sonar.host.url", "https://sonarcloud.io"
-    }
+  properties {
+    property 'sonar.projectKey', 'sandro-h_tenantsecrets'
+    property 'sonar.organization', 'sandro-h-github'
+    property 'sonar.host.url', 'https://sonarcloud.io'
+  }
 }
 
 task tagRelease(type: Exec) {
-    commandLine 'git', 'tag', "v${baseVersion}"
+  commandLine 'git', 'tag', "v${baseVersion}"
 }
 
 task pushTag(type: Exec) {
-    commandLine 'git', 'push', 'origin', "v${baseVersion}"
-    mustRunAfter tagRelease
+  commandLine 'git', 'push', 'origin', "v${baseVersion}"
+  mustRunAfter tagRelease
 }
 
 task release {
-    group 'Publishing'
-    description 'Trigger release via GH Actions'
-    dependsOn tagRelease, pushTag
+  group 'Publishing'
+  description 'Trigger release via GH Actions'
+  dependsOn tagRelease, pushTag
 }
