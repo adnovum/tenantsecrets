@@ -1,7 +1,7 @@
 # GoCD tenantsecrets plugin
 
-![CI](https://github.com/sandro-h/tenantsecrets/workflows/CI/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=sandro-h_tenantsecrets&metric=alert_status)](https://sonarcloud.io/dashboard?id=sandro-h_tenantsecrets)
+![CI](https://github.com/adnovum/tenantsecrets/workflows/CI/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=adnovum_tenantsecrets&metric=alert_status)](https://sonarcloud.io/dashboard?id=adnovum_tenantsecrets)
 
 GoCD secrets plugin that provides multi-tenant secrets.
 
@@ -14,7 +14,7 @@ secret and making GoCD decrypt it in their own pipeline.
 
 ### Install plugin
 
-* Download the latest version of the plugin from the [releases page](https://github.com/sandro-h/tenantsecrets/releases)
+* Download the latest version of the plugin from the [releases page](https://github.com/adnovum/tenantsecrets/releases)
 * Install it on the GoCD server as described in the [GoCD Plugin User Guide](https://docs.gocd.org/current/extension_points/plugin_user_guide.html).
 
 ### Install webservice
@@ -25,7 +25,7 @@ The webservice can be run as a docker container. It is meant to be deployed on t
 its encryption key.
 
 ```shell
-docker run -d -p 1717:1717 -v /path/to/gocd/cipher.aes:/config/cipher.aes:ro ghcr.io/sandro-h/tenantsecrets:latest
+docker run -d -p 1717:1717 -v /path/to/gocd/cipher.aes:/config/cipher.aes:ro ghcr.io/adnovum/tenantsecrets:latest
 ```
 
 It provides the following entrypoints:
@@ -42,7 +42,7 @@ The following environment variables can be used to configure the webservice:
 | Env. variable | Default | Description |
 | ------------- | ------- | ----------- |
 | `TENANTSECRETS_CIPHERFILE` | `/config/cipher.aes` | Path to cipher file for secret encryption. |
-| `TENANTSECRETS_DOCLINK` | `https://github.com/sandro-h/tenantsecrets` | The documentation link shown after encrypting a secret in the UI. |
+| `TENANTSECRETS_DOCLINK` | `https://github.com/adnovum/tenantsecrets` | The documentation link shown after encrypting a secret in the UI. |
 
 ## Administration
 
