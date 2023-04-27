@@ -1,26 +1,26 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.1'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+  id 'org.springframework.boot' version '2.4.1'
+  id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation project(':base')
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation project(':base')
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 bootBuildImage {
-	def imageBaseName = "ghcr.io/sandro-h/${rootProject.name}"
-	imageName = "${imageBaseName}:${project.version}"
-	doLast {
-		println "::set-output name=image_base::${imageBaseName}"
-		println "::set-output name=image::${imageName}"
-	}
+  def imageBaseName = "ghcr.io/sandro-h/${rootProject.name}"
+  imageName = "${imageBaseName}:${project.version}"
+  doLast {
+    println "::set-output name=image_base::${imageBaseName}"
+    println "::set-output name=image::${imageName}"
+  }
 }
 
 processResources {
-	exclude 'application-default.yaml'
+  exclude 'application-default.yaml'
 }
