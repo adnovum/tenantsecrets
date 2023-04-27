@@ -12,14 +12,13 @@ dependencies {
   testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.1.0'
 }
 
-ext.archiveBaseName = 'tenantsecrets-plugin'
+archivesBaseName = 'tenantsecrets-plugin'
 
 jar {
-  archiveBaseName = project.archiveBaseName
   from(configurations.runtimeClasspath) {
     into 'lib'
   }
   doLast {
-    println "::set-output name=version::${version}"
+    println "::set-output name=version::${archiveVersion.get()}"
   }
 }
