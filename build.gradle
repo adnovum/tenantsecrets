@@ -8,11 +8,7 @@ def baseGroup = 'com.vary.tenantsecrets'
 def baseVersion = '0.0.4'
 
 subprojects {
-  apply plugin: 'java'
   apply plugin: 'jacoco'
-
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
 
   group = baseGroup
   version = baseVersion
@@ -23,6 +19,7 @@ subprojects {
 
   test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
   }
 
   jacoco {
@@ -34,7 +31,6 @@ subprojects {
       xml.enabled true
     }
   }
-  test.finalizedBy jacocoTestReport
 }
 
 gocdPlugin {
