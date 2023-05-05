@@ -51,7 +51,7 @@ jobs:
         run: ./gradlew bootBuildImage
 
       - name: Docker login
-        run: echo ${{ secrets.PACKAGE_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       - name: Tag docker image as latest
         run: docker tag ${{ steps.build_docker.outputs.image }} ${{ steps.build_docker.outputs.image_base }}:latest
