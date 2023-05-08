@@ -61,23 +61,13 @@ jobs:
           docker push ${{ steps.build_docker.outputs.image }}
           docker push ${{ steps.build_docker.outputs.image_base }}:latest
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref }}
-          release_name: ${{ steps.build_jars.outputs.version }}
+          name: ${{ steps.build_jars.outputs.version }}
           draft: false
           prerelease: false
-
-      - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: plugin/build/libs/tenantsecrets-plugin-${{ steps.build_jars.outputs.version }}.jar
-          asset_name: tenantsecrets-plugin-${{ steps.build_jars.outputs.version }}.jar
-          asset_content_type: application/java-archive
+          files: |
+            plugin/build/libs/tenantsecrets-plugin-${{ steps.build_jars.outputs.version }}.jar
