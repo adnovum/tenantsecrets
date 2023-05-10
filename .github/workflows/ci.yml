@@ -65,7 +65,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ steps.build_jars.outputs.version }}
+          name: ${{ (github.event_name != 'release') && steps.build_jars.outputs.version || '' }}
           draft: false
           prerelease: false
           files: |
