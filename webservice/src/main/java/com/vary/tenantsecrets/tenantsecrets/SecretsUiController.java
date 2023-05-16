@@ -1,5 +1,7 @@
 package com.vary.tenantsecrets.tenantsecrets;
 
+import java.lang.invoke.MethodHandles;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ import javax.validation.constraints.NotEmpty;
 @RequestMapping("/secrets")
 public class SecretsUiController {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SecretsUiController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final String SECRETS_FORM = "secretsForm";
 
