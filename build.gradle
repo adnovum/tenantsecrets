@@ -5,7 +5,7 @@ plugins {
 apply from: 'https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle'
 
 def baseGroup = 'com.vary.tenantsecrets'
-def baseVersion = '0.0.5'
+def baseVersion = '0.0.6'
 
 subprojects {
   apply plugin: 'jacoco'
