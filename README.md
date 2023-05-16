@@ -31,7 +31,7 @@ docker run -d -p 1717:1717 -v /path/to/gocd/cipher.aes:/config/cipher.aes:ro ghc
 It provides the following entrypoints:
 
 * GUI: <http://localhost:1717/secrets>
-* REST: <http://localhost:1717/api/secrets>
+* REST: <http://localhost:1717/secrets/api>
 
 See "Generating secrets" on how to use these entrypoints.
 
@@ -80,12 +80,12 @@ follow the instructions in the form.
 
 ### Via REST
 
-POST your secret to `http://localhost:1717/api/secrets/<tenant identifier>`.
+POST your secret to `http://localhost:1717/secrets/api/<tenant identifier>`.
 
 Example curl call:
 
 ```shell
-curl 'http://localhost:1717/api/secrets/tenant1' -s -H 'Content-Type: text/plain' -d "my secret"
+curl 'http://localhost:1717/secrets/api/tenant1' -s -H 'Content-Type: text/plain' -d "my secret"
 ```
 
 The secret can be referenced in pipelines using the [secret param syntax](https://docs.gocd.org/current/configuration/secrets_management.html#step-4---define-secret-params).
