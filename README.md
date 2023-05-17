@@ -51,8 +51,11 @@ The following environment variables can be used to configure the webservice:
 GoCD admins have to create a secret configuration for each tenant that
 wishes to use tenant secrets:
 
-* **Id**: Use the tenant identifier for convenience
-* **Tenant identifier**: The unique identifier of the tenant to which the secrets will be bound.
+* **Id**: The identifier of the secret configuration, which will be [used by pipelines](#using-secrets). It is 
+  recommended that you set it to the same value as the tenant identifier, because the plugin will not know about 
+  this ID, so it is error prone if the two are not aligned.
+* **Tenant identifier**: The unique identifier of the tenant to which the secrets will be bound. The plugin will use
+  this ID during [secret generation](#generating-secrets) and lookups.
 * **Cipher file**: Path to the master key for the encryption. Defaults to `/godata/config/cipher.aes`, which is the cipher file used
 by the gocd-server docker image.
 * **Rules**: Make sure to restrict the secret config to the pipeline group or environment that only the tenant has access to.
@@ -87,6 +90,8 @@ Example curl call:
 ```shell
 curl 'http://localhost:1717/secrets/api/tenant1' -s -H 'Content-Type: text/plain' -d "my secret"
 ```
+
+## Using secrets
 
 The secret can be referenced in pipelines using the [secret param syntax](https://docs.gocd.org/current/configuration/secrets_management.html#step-4---define-secret-params).
 
