@@ -1,10 +1,14 @@
 package com.vary.tenantsecrets.crypto;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.CharStreams;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public class KeyProvider {
 
@@ -12,8 +16,8 @@ public class KeyProvider {
 		// Static helper class.
 	}
 
-	public static byte[] fromFile(File file) throws IOException {
-		try (InputStream is = new FileInputStream(file)) {
+	public static byte[] fromPath(Path path) throws IOException {
+		try (InputStream is = Files.newInputStream(path)) {
 			return fromStream(is);
 		}
 	}
