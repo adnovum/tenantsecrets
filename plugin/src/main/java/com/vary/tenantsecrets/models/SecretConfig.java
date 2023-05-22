@@ -26,14 +26,18 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Objects;
 
 public class SecretConfig {
+
+    public static final String TENANT_ID_PROPERTY = "tenantId";
+    public static final String CIPHER_FILE_PROPERTY = "cipherFile";
+
     @Expose
-    @Property(name = "tenantId", required = true)
-    @SerializedName("tenantId")
+    @Property(name = TENANT_ID_PROPERTY, required = true)
+    @SerializedName(TENANT_ID_PROPERTY)
     private String tenantId;
 
     @Expose
-    @Property(name = "cipherFile")
-    @SerializedName("cipherFile")
+    @Property(name = CIPHER_FILE_PROPERTY)
+    @SerializedName(CIPHER_FILE_PROPERTY)
     private String cipherFile;
 
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();

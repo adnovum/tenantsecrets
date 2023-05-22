@@ -56,8 +56,8 @@ wishes to use tenant secrets:
   this ID, so it is error prone if the two are not aligned.
 * **Tenant identifier**: The unique identifier of the tenant to which the secrets will be bound. The plugin will use
   this ID during [secret generation](#generating-secrets) and lookups.
-* **Cipher file**: Path to the master key for the encryption. Defaults to `/godata/config/cipher.aes`, which is the cipher file used
-by the gocd-server docker image.
+* **Cipher file**: Path to the master key for the encryption. Defaults to `/godata/config/cipher.aes`, which is the
+  cipher file used by the gocd-server docker image. To generate one, you can use e.g., command `openssl rand -hex 16`.
 * **Rules**: Make sure to restrict the secret config to the pipeline group or environment that only the tenant has access to.
 
 ![secret configuration](docs/secret_configuration.png)
@@ -138,3 +138,7 @@ Trigger a release on GitHub:
 ```shell
 ./gradlew release
 ```
+
+# Contribution Guide
+
+This project uses default IntelliJ IDEA code style settings, with overrides from EditorConfig.

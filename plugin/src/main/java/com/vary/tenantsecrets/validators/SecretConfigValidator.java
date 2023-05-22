@@ -19,16 +19,52 @@ package com.vary.tenantsecrets.validators;
 
 import com.github.bdpiparva.plugin.base.validation.ValidationResult;
 import com.github.bdpiparva.plugin.base.validation.Validator;
+import com.thoughtworks.go.plugin.api.logging.Logger;
+import com.vary.tenantsecrets.crypto.KeyProvider;
+import com.vary.tenantsecrets.models.SecretConfig;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 public class SecretConfigValidator implements Validator {
 
+    private static final Logger LOG = Logger.getLoggerFor(SecretConfigValidator.class);
+
+    static final String CIPHER_FILE_DOES_NOT_EXIST = "Cipher file does not exist";
+
+    static final String GIVEN_PATH_IS_NOT_A_FILE = "Given path is not a file";
+
     @Override
     public ValidationResult validate(Map<String, String> requestBody) {
+        ValidationResult validationResult = new ValidationResult();
+        String cipherFile = requestBody.get(SecretConfig.CIPHER_FILE_PROPERTY);
 
-        // here you will receive all the configuration property as key-value pair
+        if (StringUtils.isNotEmpty(cipherFile)) {
+            Path cipherFilePath = Paths.get(cipherFile);
 
-        return new ValidationResult();
+            if (!Files.exists(cipherFilePath)) {
+                validationResult.add(SecretConfig.CIPHER_FILE_PROPERTY, CIPHER_FILE_DOES_NOT_EXIST);
+            } else if (!Files.isRegularFile(cipherFilePath)) {
+                validationResult.add(SecretConfig.CIPHER_FILE_PROPERTY, GIVEN_PATH_IS_NOT_A_FILE);
+            } else if (!Files.isReadable(cipherFilePath)) {
+                validationResult.add(SecretConfig.CIPHER_FILE_PROPERTY, "Cipher file is not readable");
+            } else {
+                try {
+                    KeyProvider.fromPath(cipherFilePath);
+                } catch (IllegalArgumentException e) {
+                    validationResult.add(SecretConfig.CIPHER_FILE_PROPERTY,
+                            "File does not contain a valid cipher: " + e.getMessage());
+                } catch (IOException e) {
+                    LOG.error("Could not read cipher file " + cipherFile, e);
+                    validationResult.add(SecretConfig.CIPHER_FILE_PROPERTY, "Error reading cipher file. Check logs.");
+                }
+            }
+        }
+
+        return validationResult;
     }
 }

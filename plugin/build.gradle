@@ -6,10 +6,11 @@ dependencies {
   compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.1.0'
 
   // Use JUnit test framework
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.1'
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.1'
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.4.1'
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.0'
   testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: '19.1.0'
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.18.1'
 }
 
 archivesBaseName = 'tenantsecrets-plugin'

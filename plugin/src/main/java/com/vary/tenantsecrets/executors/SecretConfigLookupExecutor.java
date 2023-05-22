@@ -27,9 +27,10 @@ import com.vary.tenantsecrets.crypto.HKDFKeyDeriver;
 import com.vary.tenantsecrets.crypto.KeyProvider;
 import com.vary.tenantsecrets.models.LookupSecretRequest;
 import com.vary.tenantsecrets.models.ResolvedSecret;
+import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,10 +47,7 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
     @Override
     protected GoPluginApiResponse execute(LookupSecretRequest request) {
         String tenantId = request.getConfig().getTenantId();
-        String cipherFile = request.getConfig().getCipherFile();
-        if (cipherFile == null || cipherFile.isEmpty()) {
-            cipherFile = DEFAULT_CIPHER_FILE;
-        }
+        String cipherFile = StringUtils.defaultIfEmpty(request.getConfig().getCipherFile(), DEFAULT_CIPHER_FILE);
 
         ContextSpecificSecretProvider secretProvider;
         try {
@@ -63,13 +61,12 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
         }
 
         List<ResolvedSecret> resolvedSecrets = new LinkedList<>();
-        for (String secret: request.getKeys()) {
+        for (String secret : request.getKeys()) {
             try {
                 String decrypted = secretProvider.decrypt(secret, tenantId);
                 resolvedSecrets.add(new ResolvedSecret(secret, decrypted));
-            }
-            catch (Exception e) {
-                LOG.error("Could not decrypt secret " + secret,  e);
+            } catch (Exception e) {
+                LOG.error("Could not decrypt secret " + secret, e);
                 String message = "Could not decrypt secret. Was it generated for the " +
                         "tenant identifier defined for this secret config (" + tenantId + ")?";
                 return new DefaultGoPluginApiResponse(404,
@@ -90,7 +87,7 @@ public class SecretConfigLookupExecutor extends LookupExecutor<LookupSecretReque
             secretProviderInstance = new ContextSpecificSecretProvider(
                     new AesEncrypter(),
                     new HKDFKeyDeriver(),
-                    KeyProvider.fromFile(new File(cipherFile))
+                    KeyProvider.fromPath(Paths.get(cipherFile))
             );
         }
         return secretProviderInstance;
