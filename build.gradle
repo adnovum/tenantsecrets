@@ -5,7 +5,7 @@ plugins {
 
 apply from: 'https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle'
 
-def baseGroup = 'com.vary.tenantsecrets'
+def baseGroup = 'com.adnovum.tenantsecrets'
 def baseVersion = '0.0.6'
 
 allprojects {
@@ -34,7 +34,7 @@ subprojects {
 }
 
 gocdPlugin {
-  id = baseGroup
+  id = "${baseGroup}.plugin"
   pluginVersion = baseVersion
   goCdVersion = '20.7.0'
   name = 'Tenant secrets plugin'
