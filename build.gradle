@@ -1,5 +1,6 @@
 plugins {
   id 'org.sonarqube' version '3.5.0.2730'
+  id 'jacoco'
 }
 
 apply from: 'https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle'
@@ -7,15 +8,17 @@ apply from: 'https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-help
 def baseGroup = 'com.vary.tenantsecrets'
 def baseVersion = '0.0.6'
 
+allprojects {
+  repositories {
+    mavenCentral()
+  }
+}
+
 subprojects {
   apply plugin: 'jacoco'
 
   group = baseGroup
   version = baseVersion
-
-  repositories {
-    mavenCentral()
-  }
 
   test {
     useJUnitPlatform()
@@ -26,11 +29,8 @@ subprojects {
     toolVersion = '0.8.6'
   }
 
-  jacocoTestReport {
-    reports {
-      xml.enabled true
-    }
-  }
+  tasks.withType(JacocoReport).configureEach { enabled = false }
+  tasks.withType(Test).configureEach { finalizedBy ':jacocoMergedReport' }
 }
 
 gocdPlugin {
@@ -44,11 +44,33 @@ gocdPlugin {
   pluginProject = project(':plugin')
 }
 
+tasks.register('jacocoMergedReport', JacocoReport) {
+  subprojects {
+    sourceSets sourceSets.main
+    executionData files(tasks.withType(Test)).filter { it.name.endsWith('.exec') && it.exists() }
+    dependsOn tasks.withType(Test)
+  }
+
+  reports {
+    xml.required = true
+    html.required = true
+  }
+}
+
 sonarqube {
   properties {
     property 'sonar.projectKey', 'adnovum_tenantsecrets'
     property 'sonar.organization', 'adnovum'
     property 'sonar.host.url', 'https://sonarcloud.io'
+    property 'sonar.coverage.jacoco.xmlReportPaths', "${(jacocoMergedReport as JacocoReport).reports.xml.outputLocation.get()}"
+  }
+}
+
+subprojects {
+  sonarqube {
+    properties {
+      property 'sonar.coverage.jacoco.xmlReportPaths', null
+    }
   }
 }
 
