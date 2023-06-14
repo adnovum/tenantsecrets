@@ -41,7 +41,7 @@ public class TenantsecretsPlugin implements GoPlugin {
         requestDispatcher = BaseBuilder
                 .forSecrets()
                 .v1()
-                .icon("/plugin-icon.png", "image/png")
+                .icon("/plugin-icon.svg", "image/svg+xml")
                 .configMetadata(SecretConfig.class, true)
                 .configView("/secrets.template.html")
                 .validateSecretConfig(new SecretConfigValidator())
