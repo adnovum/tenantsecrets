@@ -6,7 +6,7 @@ plugins {
 apply from: 'https://raw.githubusercontent.com/gocd/gocd-plugin-gradle-task-helpers/75a8575/helper.gradle'
 
 def baseGroup = 'com.adnovum.tenantsecrets'
-def baseVersion = '0.0.6'
+def baseVersion = '0.0.7'
 
 allprojects {
   repositories {
